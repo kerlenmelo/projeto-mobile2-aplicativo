@@ -1,0 +1,23 @@
+# Android / IntelliJ
+*.iml
+.gradle/
+.idea/
+build/
+local.properties
+.DS_Store
+.cxx/
+captures/
+*.apk
+*.aab
+*.keystore
+
+# Logs e caches
+*.log
+app/release/
+app/debug/
+
+# Arquivos temporários
+*.tmp
+*.temp
+*.bak
+*.swp
