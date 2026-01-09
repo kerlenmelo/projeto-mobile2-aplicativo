@@ -3,45 +3,52 @@ package com.mobile2.aconselhamentofinanceiropessoal
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.mobile2.aconselhamentofinanceiropessoal.ui.theme.AconselhamentoFinanceiroPessoalTheme
+import androidx.compose.material3.*
+import androidx.compose.runtime.collectAsState
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.mobile2.aconselhamentofinanceiropessoal.ui.home.AddTransactionScreen
+import com.mobile2.aconselhamentofinanceiropessoal.ui.home.HomeScreen
+import com.mobile2.aconselhamentofinanceiropessoal.viewmodel.HomeViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+
+        val homeViewModel = HomeViewModel(applicationContext)
+
         setContent {
-            AconselhamentoFinanceiroPessoalTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+            val navController = rememberNavController()
+
+            MaterialTheme {
+                Surface(color = MaterialTheme.colorScheme.background) {
+                    NavHost(navController = navController, startDestination = "home") {
+
+                        composable("home") {
+                            val transactions = homeViewModel.transactions.collectAsState().value
+                            val balance = homeViewModel.balance.collectAsState().value
+
+                            HomeScreen(
+                                transactions = transactions,
+                                balance = balance,
+                                onAddTransactionClick = {
+                                    navController.navigate("addTransaction")
+                                }
+                            )
+                        }
+
+                        composable("addTransaction") {
+                            AddTransactionScreen(
+                                onSave = { type, category, description, value ->
+                                    homeViewModel.addTransaction(type, category, description, value)
+                                    navController.popBackStack()
+                                }
+                            )
+                        }
+                    }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    AconselhamentoFinanceiroPessoalTheme {
-        Greeting("Android")
     }
 }
