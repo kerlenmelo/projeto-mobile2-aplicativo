@@ -16,6 +16,7 @@ import com.mobile2.aconselhamentofinanceiropessoal.viewmodel.LoginViewModel
 @Composable
 fun LoginScreen(
     onLoginSuccess: () -> Unit,
+    onNavigateToRegister: () -> Unit
 ) {
     val context = LocalContext.current
     val repository = remember { UserRepository(context) }
@@ -64,6 +65,12 @@ fun LoginScreen(
             }
 
             Spacer(modifier = Modifier.height(8.dp))
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            TextButton(onClick = { onNavigateToRegister() }) {
+                Text("Criar uma conta")
+            }
 
             // Feedback visual
             when (state) {
