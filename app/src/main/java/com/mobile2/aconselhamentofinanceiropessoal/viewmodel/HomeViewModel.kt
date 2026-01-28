@@ -1,4 +1,4 @@
-package com.mobile2.aconselhamentofinanceiropessoal.data.viewmodel
+package com.mobile2.aconselhamentofinanceiropessoal.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -26,13 +26,11 @@ class HomeViewModel(
 
     private fun fetchData() {
         viewModelScope.launch {
-            // Busca transações apenas deste usuário
             repository.getAllTransactions(userId).collectLatest { list ->
                 _transactions.value = list
             }
         }
         viewModelScope.launch {
-            // Busca saldo apenas deste usuário
             repository.getBalance(userId).collectLatest { value ->
                 _balance.value = value
             }
@@ -41,7 +39,6 @@ class HomeViewModel(
 
     fun addTransaction(transaction: TransactionEntity) {
         viewModelScope.launch {
-            // A transaction já vem com o userId preenchido pela MainActivity
             repository.insert(transaction)
         }
     }

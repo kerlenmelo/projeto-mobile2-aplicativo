@@ -1,24 +1,32 @@
 package com.mobile2.aconselhamentofinanceiropessoal.data.repository
 
-import android.content.Context
-import androidx.room.Room
-import com.mobile2.aconselhamentofinanceiropessoal.data.local.AppDatabase
+import com.mobile2.aconselhamentofinanceiropessoal.data.local.TransactionDao
 import com.mobile2.aconselhamentofinanceiropessoal.data.model.TransactionEntity
+import kotlinx.coroutines.flow.Flow
 
-class TransactionRepository(context: Context) {
+class TransactionRepository(private val transactionDao: TransactionDao) {
 
-    private val db = Room.databaseBuilder(
-        context,
-        AppDatabase::class.java,
-        "finansmart_db"
-    ).fallbackToDestructiveMigration().build()
+    fun getAllTransactions(userId: Int): Flow<List<TransactionEntity>> {
+        return transactionDao.getAllTransactions(userId)
+    }
 
-    private val dao = db.transactionDao()
+    fun getBalance(userId: Int): Flow<Double> {
+        return transactionDao.getBalance(userId)
+    }
 
-    suspend fun insert(transaction: TransactionEntity) = dao.insert(transaction)
-    suspend fun update(transaction: TransactionEntity) = dao.update(transaction)
-    suspend fun delete(transaction: TransactionEntity) = dao.delete(transaction)
-    fun getAllTransactions(userId: Int) = dao.getAllTransactions(userId)
-    fun getTotalByType(userId: Int, type: String) = dao.getTotalByType(userId, type)
-    fun getBalance(userId: Int) = dao.getBalance(userId)
+    fun getTotalByType(userId: Int, type: String): Flow<Double> {
+        return transactionDao.getTotalByType(userId, type)
+    }
+
+    suspend fun insert(transaction: TransactionEntity) {
+        transactionDao.insert(transaction)
+    }
+
+    suspend fun update(transaction: TransactionEntity) {
+        transactionDao.update(transaction)
+    }
+
+    suspend fun delete(transaction: TransactionEntity) {
+        transactionDao.delete(transaction)
+    }
 }

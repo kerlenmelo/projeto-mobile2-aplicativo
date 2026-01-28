@@ -19,9 +19,10 @@ interface TransactionDao {
     @Query("SELECT * FROM transactions WHERE userId = :userId ORDER BY date DESC")
     fun getAllTransactions(userId: Int): Flow<List<TransactionEntity>>
 
-    @Query("SELECT SUM(value) FROM transactions WHERE userId = :userId AND type = :type")
-    fun getTotalByType(userId: Int, type: String): Flow<Double?>
+    // Use COALESCE para garantir que nunca retorne NULL
+    @Query("SELECT COALESCE(SUM(value), 0) FROM transactions WHERE userId = :userId AND type = :type")
+    fun getTotalByType(userId: Int, type: String): Flow<Double> // Removeu o ?
 
-    @Query("SELECT SUM(CASE WHEN type = 'Receita' THEN value ELSE -value END) FROM transactions WHERE userId = :userId")
-    fun getBalance(userId: Int): Flow<Double?>
+    @Query("SELECT COALESCE(SUM(CASE WHEN type = 'Receita' THEN value ELSE -value END), 0) FROM transactions WHERE userId = :userId")
+    fun getBalance(userId: Int): Flow<Double> // Removeu o ?
 }

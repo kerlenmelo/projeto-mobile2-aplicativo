@@ -6,10 +6,10 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.mobile2.aconselhamentofinanceiropessoal.data.model.TransactionEntity
-import com.mobile2.aconselhamentofinanceiropessoal.data.model.UserEntity
+import com.mobile2.aconselhamentofinanceiropessoal.data.model.UserModel
 
 @Database(
-    entities = [UserEntity::class, TransactionEntity::class],
+    entities = [UserModel::class, TransactionEntity::class],
     version = 3,
     exportSchema = false
 )
