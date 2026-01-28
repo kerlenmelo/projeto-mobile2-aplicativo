@@ -1,10 +1,12 @@
 # Aconselhamento Financeiro Pessoal
 
 Este é um aplicativo Android nativo para gerenciamento de finanças pessoais. Ele permite que os usuários controlem suas receitas e despesas, visualizem o saldo atual e analisem seus gastos por meio de relatórios gráficos.
-Alunos:
-    - Rafael Marques
-    - Kerlen Melo
-    - Cláudio Farias
+
+
+- **Alunos:**
+    - **Rafael Marques**
+    - **Kerlen Melo**
+    - **Cláudio Farias**
 
 ## Funcionalidades
 
